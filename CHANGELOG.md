@@ -4,7 +4,11 @@ All notable changes to the Sidekick plugin are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
+## [1.2.9-jinle] - 2026-05-10
 
+### Added
+
+- **Tool approval toggle in chat input**: Added a quick-toggle button at the bottom of the chat input area to switch between "Auto-approve tools" and "Ask before tools" modes without navigating to settings.
 ## [1.2.7-jinle] - 2026-05-09
 
 ### Fixed

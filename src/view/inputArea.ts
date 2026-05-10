@@ -7,6 +7,7 @@ import {BUILTIN_COMMAND_DESCRIPTORS} from './builtinCommands';
 declare module '../sidekickView' {
 	interface SidekickView {
 		buildInputArea(parent: HTMLElement): void;
+		updateToolApprovalBtn(): void;
 		handleAttachFile(): void;
 		handleClipboard(): Promise<void>;
 		handleImagePaste(blob: File): Promise<void>;
@@ -179,6 +180,26 @@ export function installInputArea(ViewClass: {prototype: unknown}): void {
 				void this.handleSend();
 			}
 		});
+
+		// Tool approval mode toggle (below input row)
+		const inputFooter = inputArea.createDiv({cls: 'sidekick-input-footer'});
+		this.toolApprovalBtn = inputFooter.createEl('button', {cls: 'clickable-icon sidekick-tool-approval-btn'});
+		this.toolApprovalBtn.addEventListener('click', async () => {
+			this.plugin.settings.toolApproval = this.plugin.settings.toolApproval === 'allow' ? 'ask' : 'allow';
+			await this.plugin.saveSettings();
+			this.updateToolApprovalBtn();
+		});
+		this.updateToolApprovalBtn();
+	};
+
+	proto.updateToolApprovalBtn = function (): void {
+		const isAuto = this.plugin.settings.toolApproval === 'allow';
+		this.toolApprovalBtn.empty();
+		const iconSpan = this.toolApprovalBtn.createSpan({cls: 'sidekick-tool-approval-icon'});
+		setIcon(iconSpan, isAuto ? 'check-circle' : 'shield-question');
+		this.toolApprovalBtn.createSpan({text: isAuto ? 'Auto-approve tools' : 'Ask before tools'});
+		this.toolApprovalBtn.title = isAuto ? 'Tools are auto-approved — click to require approval' : 'Tool approval required — click to auto-approve';
+		this.toolApprovalBtn.toggleClass('is-auto', isAuto);
 	};
 
 	proto.handleAttachFile = function (): void {

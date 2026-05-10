@@ -202,6 +202,7 @@ export class SidekickView extends ItemView {
 	agentEditBar!: HTMLElement;
 	scopeBar!: HTMLElement;
 	sendBtn!: HTMLButtonElement;
+	toolApprovalBtn!: HTMLButtonElement;
 	agentSelect!: HTMLSelectElement;
 	modelSelect!: HTMLSelectElement;
 	modelIconEl!: HTMLSpanElement;

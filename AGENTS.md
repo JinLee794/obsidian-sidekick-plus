@@ -34,7 +34,7 @@ npm install
 
 ```bash
 npm run dev
-obsidian plugin:reload id=sidekick
+obsidian plugin:reload id=sidekick-plus
 ```
 
 ### Production build
@@ -99,7 +99,7 @@ npm run build
 - For auto reload run:
 
 ```bash
-obsidian plugin:reload id=sidekick
+obsidian plugin:reload id=sidekick-plus
 ```
 
 ## Commands & settings
@@ -257,7 +257,7 @@ this.registerInterval(window.setInterval(() => { /* ... */ }, 1000));
 - Reload the plugin:
 
 ```bash
-obsidian plugin:reload id=sidekick
+obsidian plugin:reload id=sidekick-plus
 ```
 
 - Commands not appearing: verify `addCommand` runs after `onload` and IDs are unique.

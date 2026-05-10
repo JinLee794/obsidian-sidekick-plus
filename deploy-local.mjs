@@ -12,7 +12,7 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const SCRIPT_DIR = path.dirname(__filename);
 const CONFIG_FILE = path.join(SCRIPT_DIR, ".deploy-local.conf");
-const PLUGIN_ID = "sidekick";
+const PLUGIN_ID = "sidekick-plus";
 const REQUIRED_ARTIFACTS = ["main.js", "manifest.json", "styles.css"];
 
 function trimTrailingSeparators(inputPath) {

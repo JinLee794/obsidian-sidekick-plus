@@ -2398,6 +2398,52 @@
 	stroke: var(--text-on-accent);
 }
 
+/* ── Input footer (tool approval toggle) ─────────────────────── */
+
+.sidekick-input-footer {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.sidekick-tool-approval-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 2px 8px;
+	border: none;
+	background: transparent;
+	border-radius: var(--radius-s);
+	font-size: var(--font-smallest);
+	color: var(--text-muted);
+	cursor: pointer;
+	transition: color 0.15s, background 0.15s;
+}
+
+.sidekick-tool-approval-btn:hover {
+	color: var(--text-normal);
+	background: var(--background-modifier-hover);
+}
+
+.sidekick-tool-approval-btn.is-auto {
+	color: var(--text-success);
+}
+
+.sidekick-tool-approval-btn.is-auto:hover {
+	color: var(--text-success);
+	background: var(--background-modifier-hover);
+}
+
+.sidekick-tool-approval-icon {
+	display: inline-flex;
+	align-items: center;
+}
+
+.sidekick-tool-approval-icon svg {
+	width: 14px;
+	height: 14px;
+}
+
 /* ── Config toolbar ───────────────────────────────────────────── */
 
 .sidekick-toolbar {

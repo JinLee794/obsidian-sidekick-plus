@@ -1,8 +1,8 @@
-# Sidekick
+# Sidekick Plus
 
-![Obsidian Sidekick](./docs/images/banner.png)
+![Obsidian Sidekick Plus](./docs/images/banner.png)
 
-Your AI-powered second brain inside Obsidian. Chat with agents, run tools, fire triggers, search your vault with AI, and transform text — all without leaving your notes.
+An enhanced AI-powered second brain inside Obsidian. Chat with agents, run tools, fire triggers, search your vault with AI, and transform text — all without leaving your notes.
 
 Sidekick connects to GitHub Copilot or your own AI provider and gives you a fully configurable assistant panel with agents, skills, MCP tool servers, prompt templates, triggers, ghost-text autocomplete, and an AI-powered editor.
 
@@ -24,8 +24,8 @@ The Sidekick panel sits in the right sidebar alongside your notes. Pick an agent
 ## Quick start
 
 1. **Install** — Either:
-   - **Via BRAT** — Install the [BRAT](https://github.com/TfTHacker/obsidian42-brat) community plugin, then add `https://github.com/vieiraae/obsidian-sidekick` as a beta plugin. BRAT handles downloads and updates automatically.
-   - **Manual** — Download `main.js`, `styles.css`, and `manifest.json` from the [latest release](https://github.com/vieiraae/obsidian-sidekick/releases/latest) into `<YourVault>/.obsidian/plugins/sidekick/`. Then reload Obsidian and enable **Sidekick** in **Settings → Community plugins**.
+   - **Via BRAT** — Install the [BRAT](https://github.com/TfTHacker/obsidian42-brat) community plugin, then add `https://github.com/JinLee794/obsidian-sidekick-plus` as a beta plugin. BRAT handles downloads and updates automatically.
+   - **Manual** — Download `main.js`, `styles.css`, and `manifest.json` from the [latest release](https://github.com/JinLee794/obsidian-sidekick-plus/releases/latest) into `<YourVault>/.obsidian/plugins/sidekick-plus/`. Then reload Obsidian and enable **Sidekick Plus** in **Settings → Community plugins**.
 2. **Pick a provider** — Open **Settings → Sidekick**. Use **GitHub (built-in)** with a Copilot subscription ([set up the CLI](#setting-up-the-copilot-cli)), or choose a [BYOK provider](#byok-providers) (OpenAI, Anthropic, Ollama, etc.). Click **Test** to verify. With Ollama or Microsoft Foundry Local you can work offline.
 3. **Initialize** — Under **Sidekick settings**, set a folder name (default: `sidekick`) and click **Initialize** to scaffold the config structure:
    ```
@@ -776,6 +776,12 @@ This means you can author your agents and tools once in Sidekick and use them se
 
 ## Feedback
 
-Found a bug or missing a feature? [Open an issue](https://github.com/vieiraae/obsidian-sidekick/issues) — all feedback is welcome. If you find Sidekick useful, [give the repo a star](https://github.com/vieiraae/obsidian-sidekick) — it helps others discover it.
+Found a bug or missing a feature? [Open an issue](https://github.com/JinLee794/obsidian-sidekick-plus/issues) — all feedback is welcome. If you find Sidekick Plus useful, [give the repo a star](https://github.com/JinLee794/obsidian-sidekick-plus) — it helps others discover it.
 
-![Obsidian Sidekick](./docs/images/bottom-banner.png)
+---
+
+## Attribution
+
+This plugin is based on [Sidekick](https://github.com/vieiraae/obsidian-sidekick) by [Alex Vieira](https://github.com/vieiraae), licensed under Apache 2.0.
+
+![Obsidian Sidekick Plus](./docs/images/bottom-banner.png)

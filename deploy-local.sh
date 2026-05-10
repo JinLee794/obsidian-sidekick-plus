@@ -31,7 +31,7 @@ if [[ ! -f "$CONFIG_FILE" ]] || [[ "$(cat "$CONFIG_FILE")" != "$VAULT" ]]; then
   echo "✓ Vault path saved to .deploy-local.conf"
 fi
 
-PLUGIN_DIR="$VAULT/.obsidian/plugins/sidekick"
+PLUGIN_DIR="$VAULT/.obsidian/plugins/sidekick-plus"
 
 # ── Build & deploy ──────────────────────────────────────────────────
 npm run build
@@ -43,5 +43,5 @@ echo "✓ Deployed to $PLUGIN_DIR"
 
 # Reload if Obsidian CLI is available
 if command -v obsidian &>/dev/null; then
-  obsidian plugin:reload id=sidekick && echo "✓ Plugin reloaded"
+  obsidian plugin:reload id=sidekick-plus && echo "✓ Plugin reloaded"
 fi

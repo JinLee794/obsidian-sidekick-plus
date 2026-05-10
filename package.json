@@ -1,7 +1,7 @@
 {
-	"name": "obsidian-sidekick",
-	"version": "1.2.8-jinle",
-	"description": "Your Obsidian sidekick.",
+	"name": "obsidian-sidekick-plus",
+	"version": "2.0.0",
+	"description": "An enhanced AI sidekick for Obsidian. Based on Sidekick by Alex Vieira.",
 	"main": "main.js",
 	"type": "module",
 	"scripts": {

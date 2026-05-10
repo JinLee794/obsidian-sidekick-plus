@@ -1,10 +1,10 @@
 {
-	"id": "sidekick",
-	"name": "Sidekick",
-	"version": "1.2.8-jinle",
+	"id": "sidekick-plus",
+	"name": "Sidekick Plus",
+	"version": "2.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Meet your AI sidekick — a second brain that brings agents, tools, skills, autocompletion, and smart workflows directly into your notes.",
-	"author": "Alex Vieira",
-	"authorUrl": "https://github.com/vieiraae/",
+	"description": "An enhanced AI sidekick for Obsidian — agents, tools, skills, autocompletion, and smart workflows directly in your notes. Based on Sidekick by Alex Vieira.",
+	"author": "Jin Lee",
+	"authorUrl": "https://github.com/JinLee794/",
 	"isDesktopOnly": true
 }

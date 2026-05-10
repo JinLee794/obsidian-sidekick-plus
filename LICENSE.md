@@ -2,6 +2,12 @@
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
 
+   Copyright 2024 Alex Vieira (original Sidekick plugin)
+   Copyright 2025-2026 Jin Lee (Sidekick Plus modifications)
+
+   Licensed under the Apache License, Version 2.0. You may obtain a copy
+   of the License at http://www.apache.org/licenses/LICENSE-2.0
+
    TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
 
    1. Definitions.
