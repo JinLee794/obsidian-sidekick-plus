@@ -1,4 +1,4 @@
-import {App, Modal, setIcon, TFile, normalizePath} from 'obsidian';
+import {App, Modal, TFile, normalizePath} from 'obsidian';
 import {discoverAgencyServers} from '../mcpProbe';
 import type {AgencyConfig} from '../types';
 

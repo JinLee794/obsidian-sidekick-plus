@@ -698,6 +698,7 @@ export class SidekickSettingTab extends PluginSettingTab {
 					.setDesc('Encrypted locally. Use $ENV_VAR for shared vaults.')
 					.addText(text => {
 						text.inputEl.type = 'password';
+						// eslint-disable-next-line sidekick-custom/ui-sentence-case
 						text.setPlaceholder('key or $OPENAI_API_KEY')
 							.setValue(this.plugin.settings.providerApiKey)
 							.onChange((value) => {
@@ -890,7 +891,7 @@ export class SidekickSettingTab extends PluginSettingTab {
 							await this.app.vault.create(helpPath, HELP_MD_CONTENT);
 						}
 
-						new Notice('Sidekick folder initialized with sample agent, skill, prompt, trigger, mcp.json, and HELP.md.');
+						new Notice('Sidekick folder initialized with sample agent, skill, prompt, trigger, and help file.');
 					} catch (e) {
 						new Notice(`Failed to initialize sidekick folder: ${String(e)}`);
 					}
@@ -931,7 +932,7 @@ export class SidekickSettingTab extends PluginSettingTab {
 
 		new Setting(capPanel)
 			.setName('Agency CLI integration')
-			.setDesc('Enable agency services (mail, calendar, teams, etc.) via the agency CLI. Disable to hide the Agency tab entirely.')
+			.setDesc('Enable agency services (mail, calendar, teams, etc.) via the agency CLI. Disable to hide the agency tab entirely.')
 			.addToggle(toggle => toggle
 				.setValue(this.plugin.settings.agencyEnabled)
 				.onChange(async (value) => {

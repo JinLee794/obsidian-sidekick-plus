@@ -1,4 +1,4 @@
-import {App, Modal, Notice, TFile, TFolder, normalizePath, setIcon} from 'obsidian';
+import {App, Modal, Notice, TFile, normalizePath, setIcon} from 'obsidian';
 import type {AgentConfig, HandoffConfig, SkillInfo, McpServerEntry} from '../types';
 
 /**
@@ -202,7 +202,7 @@ export class AgentEditorModal extends Modal {
 		for (const server of this.context.mcpServers) {
 			this.renderChip(this.toolsContainer, server.name, 'plug',
 				this.selectedTools.has(server.name),
-				(checked) => { checked ? this.selectedTools.add(server.name) : this.selectedTools.delete(server.name); },
+				(checked) => { if (checked) { this.selectedTools.add(server.name); } else { this.selectedTools.delete(server.name); } },
 				`MCP server: ${server.name}`
 			);
 		}
@@ -212,7 +212,7 @@ export class AgentEditorModal extends Modal {
 			if (this.agent && ag.name === this.agent.name) continue;
 			this.renderChip(this.toolsContainer, `⤩ ${ag.name}`, 'bot',
 				this.selectedTools.has(ag.name),
-				(checked) => { checked ? this.selectedTools.add(ag.name) : this.selectedTools.delete(ag.name); },
+				(checked) => { if (checked) { this.selectedTools.add(ag.name); } else { this.selectedTools.delete(ag.name); } },
 				`Sub-agent: ${ag.name}${ag.description ? ` — ${ag.description}` : ''}`
 			);
 		}
@@ -228,7 +228,7 @@ export class AgentEditorModal extends Modal {
 		for (const skill of this.context.skills) {
 			this.renderChip(this.skillsContainer, skill.name, 'wand-2',
 				this.selectedSkills.has(skill.name),
-				(checked) => { checked ? this.selectedSkills.add(skill.name) : this.selectedSkills.delete(skill.name); },
+				(checked) => { if (checked) { this.selectedSkills.add(skill.name); } else { this.selectedSkills.delete(skill.name); } },
 				skill.description || skill.name
 			);
 		}
@@ -259,6 +259,7 @@ export class AgentEditorModal extends Modal {
 		this.handoffsContainer.empty();
 
 		if (this.handoffs.length === 0) {
+			// eslint-disable-next-line sidekick-custom/ui-sentence-case
 			this.handoffsContainer.createSpan({cls: 'sidekick-agent-editor-muted', text: 'No handoffs configured. Click "+ Add handoff" below.'});
 			return;
 		}

@@ -6,7 +6,7 @@ import { globalIgnores } from "eslint/config";
 const ALLOWED_UPPERCASE = new Set([
 	'Sidekick', 'Copilot', 'Markdown', 'GitHub', 'URL', 'API', 'LLM',
 	'MCP', 'CLI', 'JSON', 'YAML', 'HTML', 'CSS', 'UI', 'ID',
-	'Settings', 'Community', 'Enter',
+	'Settings', 'Community', 'Enter', 'Tools',
 ]);
 
 /**
@@ -17,22 +17,27 @@ const ALLOWED_UPPERCASE = new Set([
 function isSentenceCase(text: string): boolean {
 	// Skip very short strings, template-like strings, paths, URLs, placeholders
 	if (text.length < 2) return true;
+	const trimmed = text.trim();
+	// Skip single-word strings (badge text, status labels)
+	if (!/\s/.test(trimmed)) return true;
+	// Skip strings starting with non-letter characters (bullets, "+", symbols)
+	if (/^[^a-zA-Z]/.test(trimmed)) return true;
 	// Skip pure placeholder-style strings (ghp_…, sk-…, model-id, localhost:)
-	if (/^(ghp_|sk-|token|model-|localhost)/i.test(text)) return true;
+	if (/^(ghp_|sk-|token|model-|localhost)/i.test(trimmed)) return true;
 	// Skip strings that start with a known brand/product followed by ':'
-	const brandPrefixMatch = text.match(/^(\w+):/);
+	const brandPrefixMatch = trimmed.match(/^(\w+):/);
 	if (brandPrefixMatch && ALLOWED_UPPERCASE.has(brandPrefixMatch[1])) return true;
-	// Allow "e.g." prefix — strip it and check the rest
-	let checkText = text;
-	if (/^e\.g\.\s*/i.test(checkText)) {
-		checkText = checkText.replace(/^e\.g\.\s*/i, '').trim();
+	// Allow "e.g." prefix (with optional comma) — strip it and check the rest
+	let checkText = trimmed;
+	if (/^e\.g\.[,;:]?\s*/i.test(checkText)) {
+		checkText = checkText.replace(/^e\.g\.[,;:]?\s*/i, '').trim();
 		if (!checkText) return true;
 		// The remainder after "e.g." may start lowercase (it's an example list)
-	} else if (/^[a-z]/.test(text)) {
+	} else if (/^[a-z]/.test(trimmed)) {
 		return false; // must start uppercase
 	}
-	// Split into sentences (after . ! ?) and check each independently
-	const sentences = checkText.split(/(?<=[.!?])\s+/);
+	// Split into sentences (after . ! ? …) and check each independently
+	const sentences = checkText.split(/(?<=[.!?\u2026])\s+/);
 	for (const sentence of sentences) {
 		const words = sentence.split(/\s+/);
 		// Start from word index 1 for the first sentence, 0th word of subsequent sentences is ok (new sentence)

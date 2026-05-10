@@ -59,9 +59,6 @@ describe('Fix #2b: Prompt template — no hacky skill suppression text', () => {
 	});
 
 	it('should prepend prompt content without skill suppression text', () => {
-		// The clean pattern: just template + user text
-		const hasCleanPrepend = chatSessionSource.includes('usedPrompt.content}\\n\\n${prompt}') ||
-			chatSessionSource.includes("usedPrompt.content}\\n\\n${prompt}");
 		// Check for the absence of the old verbose version
 		expect(chatSessionSource).not.toContain('Respond directly based on the instructions above');
 	});

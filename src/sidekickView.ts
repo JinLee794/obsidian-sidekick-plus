@@ -6,9 +6,7 @@ import {
 	setIcon,
 	Component,
 	TFile,
-	TFolder,
 	Menu,
-	MarkdownView,
 	Modal,
 } from 'obsidian';
 import type SidekickPlugin from './main';
@@ -16,36 +14,26 @@ import type {
 	CopilotSession,
 	SessionConfig,
 	SessionMetadata,
-	MCPServerConfig,
 	ModelInfo,
 	MessageOptions,
 	PermissionRequest,
 	PermissionRequestResult,
 	ReasoningEffort,
 } from './copilot';
-import type {AgentConfig, SkillInfo, McpServerEntry, McpAuthConfig, McpInputVariable, McpToolInfo, PromptConfig, TriggerConfig, ChatMessage, ChatAttachment, SelectionInfo, ContextSuggestion, AgencyConfig} from './types';
+import type {AgentConfig, SkillInfo, McpServerEntry, McpInputVariable, McpToolInfo, PromptConfig, TriggerConfig, ChatMessage, ChatAttachment, SelectionInfo, ContextSuggestion, AgencyConfig} from './types';
 import {loadAgents, loadSkills, loadMcpServers, loadAgencyConfig, loadPrompts, loadTriggers, loadInstructions} from './configLoader';
 import type {InputResolver} from './configLoader';
 import {getAgentsFolder, getSkillsFolder, getToolsFolder, getPromptsFolder, getTriggersFolder, getMcpInputValue, setMcpInputValue, McpInputPromptModal} from './settings';
 import {TriggerScheduler} from './triggerScheduler';
-import type {TriggerFireContext} from './triggerScheduler';
 import {VaultIndex} from './vaultIndex';
 import {ContextBuilder} from './contextBuilder';
-import {VaultScopeModal} from './modals/vaultScopeModal';
-import {EditModal} from './modals/editModal';
 import {registerBackgroundEvents as registerBgEvents} from './view/bgEvents';
 import {ToolApprovalModal} from './modals/toolApprovalModal';
 import {FolderTreeModal} from './modals/folderTreeModal';
-import {McpEditorModal} from './modals/mcpEditorModal';
-import {AgentEditorModal} from './modals/agentEditorModal';
-import type {AgentEditorContext} from './modals/agentEditorModal';
-import {UserInputModal} from './modals/userInputModal';
-import type {UserInputRequest} from './modals/userInputModal';
-import {NewTriggerModal} from './triggerModal';
 import {debugTrace, setDebugEnabled} from './debug';
 import type {BackgroundSession} from './view/types';
-import {mapMcpServers, buildSdkAttachments, buildPrompt, buildProviderConfig} from './view/sessionConfig';
-import {probeAllMcpServers, probeMcpServer, isProxyOnlyServer, enrichServersWithAzureAuth, needsAzureAuth, clearAzureTokenCache, discoverAgencyServers, isAgencyService, primeAgencyCache} from './mcpProbe';
+import {buildProviderConfig} from './view/sessionConfig';
+import {probeMcpServer, enrichServersWithAzureAuth, discoverAgencyServers, isAgencyService, primeAgencyCache} from './mcpProbe';
 
 export const SIDEKICK_VIEW_TYPE = 'sidekick-view';
 
@@ -2938,8 +2926,6 @@ import {installPromptSlash} from './view/promptSlash';
 import {installBuiltinCommands} from './view/builtinCommands';
 import {installAgentMention} from './view/agentMention';
 import {installContextTracker} from './view/contextTracker';
-import {buildPrompt} from './view/sessionConfig';
-import {buildSdkAttachments} from './view/sessionConfig';
 import {installSessionConfigMixin} from './view/sessionConfig';
 
 installChatRenderer(SidekickView);

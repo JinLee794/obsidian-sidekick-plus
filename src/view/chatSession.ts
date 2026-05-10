@@ -1,4 +1,4 @@
-import {Component, Notice, setIcon} from 'obsidian';
+import {Notice, setIcon} from 'obsidian';
 import type {SidekickView} from '../sidekickView';
 import type {PromptConfig} from '../types';
 import {debugTrace} from '../debug';

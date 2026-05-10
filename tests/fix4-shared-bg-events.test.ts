@@ -232,7 +232,6 @@ describe('Fix #4: registerBackgroundEvents', () => {
 
 	describe('unsubscribers', () => {
 		it('should return working unsubscribe functions', () => {
-			const initialCount = session.handlers.size;
 			for (const unsub of bg.unsubscribers) unsub();
 			expect(session.handlers.size).toBe(0);
 		});

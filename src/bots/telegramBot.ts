@@ -7,7 +7,7 @@ import {normalizePath, Notice} from 'obsidian';
 import type SidekickPlugin from '../main';
 import type {SidekickView} from '../sidekickView';
 import {SIDEKICK_VIEW_TYPE} from '../sidekickView';
-import type {SessionConfig, CopilotSession, PermissionRequest, PermissionRequestResult, CustomAgentConfig} from '../copilot';
+import type {SessionConfig, CopilotSession, PermissionRequestResult, CustomAgentConfig} from '../copilot';
 import type {AgentConfig, SkillInfo, McpServerEntry} from '../types';
 import {getSkillsFolder, getMcpInputValue} from '../settings';
 import {loadAgents, loadSkills, loadMcpServers, loadAgencyConfig, loadInstructions} from '../configLoader';

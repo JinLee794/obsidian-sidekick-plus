@@ -168,7 +168,6 @@ function copyArtifacts(pluginDir) {
 }
 
 function tryReloadPlugin() {
-  const isWindows = process.platform === "win32";
   
   // Try to reload plugin via CLI if available
   // (Gracefully fails if Obsidian CLI is not installed)

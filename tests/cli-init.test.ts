@@ -7,7 +7,7 @@
  * and Copilot CLI, especially on Windows where PATH casing, PATHEXT, and
  * install-path variations commonly cause issues.
  */
-import {describe, it, expect, vi, beforeEach, afterEach} from 'vitest';
+import {describe, it, expect, beforeEach, afterEach} from 'vitest';
 import path from 'node:path';
 import os from 'node:os';
 

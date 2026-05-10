@@ -43,7 +43,7 @@ function validateCron(cron: string): string | null {
 	const parts = cron.trim().split(/\s+/);
 	if (parts.length !== 5) return 'Cron must have exactly 5 fields: minute hour day-of-month month day-of-week.';
 	// Very basic range check per field
-	const ranges = [{min: 0, max: 59}, {min: 0, max: 23}, {min: 1, max: 31}, {min: 1, max: 12}, {min: 0, max: 6}];
+	const _ranges = [{min: 0, max: 59}, {min: 0, max: 23}, {min: 1, max: 31}, {min: 1, max: 12}, {min: 0, max: 6}];
 	const fieldNames = ['Minute', 'Hour', 'Day-of-month', 'Month', 'Day-of-week'];
 	for (let i = 0; i < 5; i++) {
 		const field = parts[i]!;
@@ -118,9 +118,13 @@ export class NewTriggerModal extends Modal {
 		const guideDetails = guidance.createEl('details');
 		guideDetails.createEl('summary', {text: 'Best practices for triggers'});
 		const guideList = guideDetails.createEl('ul');
+		// eslint-disable-next-line sidekick-custom/ui-sentence-case
 		guideList.createEl('li', {text: 'Be specific: "Summarize today\'s meeting notes into action items" is better than "help me with notes".'});
+		// eslint-disable-next-line sidekick-custom/ui-sentence-case
 		guideList.createEl('li', {text: 'One task per trigger: Keep each trigger focused on a single responsibility.'});
+		// eslint-disable-next-line sidekick-custom/ui-sentence-case
 		guideList.createEl('li', {text: 'Start with an action verb: Summarize, List, Review, Generate, Prepare, etc.'});
+		// eslint-disable-next-line sidekick-custom/ui-sentence-case
 		guideList.createEl('li', {text: 'Set appropriate frequency: Don\'t run expensive triggers more often than needed.'});
 		guideList.createEl('li', {text: 'Use file-change triggers for reactive tasks and cron triggers for scheduled tasks.'});
 		guideList.createEl('li', {text: 'Test with generous schedules first, then tighten once you\'re happy with the output.'});
@@ -321,7 +325,7 @@ export class NewTriggerModal extends Modal {
 			});
 
 		// ── Prompt ───────────────────────────────────────────
-		const promptSetting = new Setting(contentEl)
+		const _promptSetting = new Setting(contentEl)
 			.setName('Prompt')
 			.setDesc('The instruction sent to the agent when this trigger fires. Be specific and action-oriented.');
 		const promptWrapper = contentEl.createDiv({cls: 'sidekick-trigger-prompt-wrapper'});
@@ -355,6 +359,7 @@ export class NewTriggerModal extends Modal {
 		const aiTip = contentEl.createDiv({cls: 'sidekick-trigger-ai-tip'});
 		const tipIcon = aiTip.createSpan({cls: 'sidekick-trigger-ai-tip-icon'});
 		setIcon(tipIcon, 'sparkles');
+		// eslint-disable-next-line sidekick-custom/ui-sentence-case
 		aiTip.createSpan({text: 'After creating, you can open the trigger file and ask Sidekick to refine it — e.g. "change this trigger to run every Sunday at 5 PM" or "make it only run on weekdays".'});
 
 		// ── Actions ──────────────────────────────────────────
@@ -477,7 +482,7 @@ export class NewTriggerModal extends Modal {
 
 		// Auto-select the prompt's agent if it has one
 		if (selected.agent) {
-			const agentDropdown = this.contentEl.querySelector('.setting-item:has(.setting-item-name:first-child) select') as HTMLSelectElement | null;
+			const _agentDropdown = this.contentEl.querySelector('.setting-item:has(.setting-item-name:first-child) select') as HTMLSelectElement | null;
 			// Find agent dropdown by iterating settings
 			for (const dd of Array.from(this.contentEl.querySelectorAll('select'))) {
 				const opts = Array.from((dd as HTMLSelectElement).options);

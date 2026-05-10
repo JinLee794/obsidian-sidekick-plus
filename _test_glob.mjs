@@ -5,7 +5,6 @@ function parseFrontmatter(content) {
   if (!match) return {meta: {}, body: content};
   const meta = {};
   const lines = (match[1] ?? '').split('\n');
-  let currentKey = '';
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     const idx = line.indexOf(':');
@@ -16,7 +15,6 @@ function parseFrontmatter(content) {
         val = val.slice(1, -1);
       }
       if (key) {
-        currentKey = key;
         meta[key] = val;
       }
     }
@@ -68,7 +66,6 @@ for (const [label, content] of testCases) {
     continue;
   }
   const rawFm = fmMatch[1] ?? '';
-  const body = (fmMatch[2] ?? '').trim();
   const {meta} = parseFrontmatter(`---\n${rawFm}\n---\n`);
   const glob = (typeof meta['glob'] === 'string' && meta['glob']) || undefined;
   const enabled = String(meta['enabled']).toLowerCase() !== 'false';

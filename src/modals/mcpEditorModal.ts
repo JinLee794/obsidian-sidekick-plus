@@ -754,6 +754,7 @@ export class McpEditorModal extends Modal {
 				}
 				await this.app.vault.create(this.mcpPath, text || '{}');
 			}
+			// eslint-disable-next-line sidekick-custom/ui-sentence-case
 			new Notice('mcp.json saved');
 			this.originalText = text || '{}';
 			this.onSaved();

@@ -146,6 +146,7 @@ export function installToolsPanel(ViewClass: {prototype: unknown}): void {
 		agencyHeader.createDiv({cls: 'sidekick-tools-title', text: 'Agency services'});
 		const agencyControls = agencyHeader.createDiv({cls: 'sidekick-tools-controls'});
 		const agencyHint = agencyControls.createSpan({cls: 'sidekick-tools-agency-hint'});
+		// eslint-disable-next-line sidekick-custom/ui-sentence-case
 		agencyHint.setText('via agency CLI');
 		const agencySettingsBtn = agencyControls.createEl('button', {
 			cls: 'clickable-icon sidekick-triggers-ctrl-btn',

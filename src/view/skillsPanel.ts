@@ -1,7 +1,5 @@
 import {normalizePath, setIcon, TFile} from 'obsidian';
 import type {SidekickView} from '../sidekickView';
-import type {SkillInfo} from '../types';
-import {getSkillsFolder} from '../settings';
 
 declare module '../sidekickView' {
 	interface SidekickView {
@@ -102,7 +100,7 @@ export function installSkillsPanel(ViewClass: {prototype: unknown}): void {
 			nameEl.createSpan({text: skill.name});
 
 			const badges = topRow.createDiv({cls: 'sidekick-prompt-card-badges'});
-			const statusBadge = badges.createSpan({
+			const _statusBadge = badges.createSpan({
 				cls: 'sidekick-skill-card-status' + (isEnabled ? ' is-enabled' : ''),
 				text: isEnabled ? 'enabled' : 'disabled',
 			});
