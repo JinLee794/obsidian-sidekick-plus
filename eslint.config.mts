@@ -1,6 +1,10 @@
 import tseslint from 'typescript-eslint';
 import globals from "globals";
 import { globalIgnores } from "eslint/config";
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 /** Known brand names / acronyms that should NOT be lowercased. */
 const ALLOWED_UPPERCASE = new Set([
@@ -177,7 +181,7 @@ export default tseslint.config(
 						'manifest.json'
 					]
 				},
-				tsconfigRootDir: import.meta.dirname,
+				tsconfigRootDir: __dirname,
 				extraFileExtensions: ['.json']
 			},
 		},
