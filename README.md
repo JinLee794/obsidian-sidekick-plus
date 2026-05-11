@@ -76,8 +76,20 @@ If not found, look here:
 
 | OS                      | Typical path                                                                                                               |
 | ----------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| **Windows**       | `%LOCALAPPDATA%\Programs\copilot-cli\copilot.exe` or `%USERPROFILE%\.vscode\extensions\github.copilot-*\copilot\dist\` |
+| **Windows**       | `%LOCALAPPDATA%\Programs\copilot-cli\copilot.exe`, or the native npm package binary shown below |
 | **Linux / macOS** | `~/.local/bin/copilot` or `~/.vscode/extensions/github.copilot-*/copilot/dist/`                                        |
+
+On Windows, avoid pointing Sidekick at wrapper scripts such as `copilot.ps1`, `copilot.cmd`, or `copilot.bat`. They can work in PowerShell while still failing when Obsidian tries to spawn them. If `copilot --version` works but Sidekick cannot connect, locate the native npm-packaged executable:
+
+```powershell
+Get-ChildItem "$(npm root -g)\@github\copilot" -Recurse -Filter "copilot.exe"
+```
+
+Then paste the full `copilot.exe` path into **Settings → Sidekick → Copilot → Path**. It will look similar to:
+
+```text
+C:\.tools\.npm-global\node_modules\@github\copilot\node_modules\@github\copilot-win32-x64\copilot.exe
+```
 
 **Authenticate** (if needed):
 
