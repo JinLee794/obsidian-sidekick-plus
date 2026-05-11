@@ -294,6 +294,59 @@ describe('resolveCommandViaPowerShell', () => {
 	});
 });
 
+describe('resolveNpmCopilotLoaderFromCommand', () => {
+	it('should resolve an npm copilot shim to native copilot.exe', async () => {
+		const {resolveNpmCopilotLoaderFromCommand} = await import('../src/copilot');
+		const fs = await import('node:fs/promises');
+		const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'copilot-shim-'));
+		const shimPath = path.join(tempDir, 'copilot.cmd');
+		const loaderPath = path.join(tempDir, 'node_modules', '@github', 'copilot', 'node_modules', '@github', `copilot-${process.platform}-${process.arch}`, `copilot${process.platform === 'win32' ? '.exe' : ''}`);
+
+		await fs.mkdir(path.dirname(loaderPath), {recursive: true});
+		await fs.writeFile(shimPath, '@echo off\n', 'utf8');
+		await fs.writeFile(loaderPath, '', 'utf8');
+
+		await expect(resolveNpmCopilotLoaderFromCommand(shimPath)).resolves.toBe(loaderPath);
+		await fs.rm(tempDir, {recursive: true, force: true});
+	});
+
+	it('should resolve a local node_modules .bin shim to native copilot.exe', async () => {
+		const {resolveNpmCopilotLoaderFromCommand} = await import('../src/copilot');
+		const fs = await import('node:fs/promises');
+		const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'copilot-local-shim-'));
+		const shimPath = path.join(tempDir, 'node_modules', '.bin', 'copilot.ps1');
+		const loaderPath = path.join(tempDir, 'node_modules', '@github', 'copilot', 'node_modules', '@github', `copilot-${process.platform}-${process.arch}`, `copilot${process.platform === 'win32' ? '.exe' : ''}`);
+
+		await fs.mkdir(path.dirname(shimPath), {recursive: true});
+		await fs.mkdir(path.dirname(loaderPath), {recursive: true});
+		await fs.writeFile(shimPath, 'Write-Output copilot\n', 'utf8');
+		await fs.writeFile(loaderPath, '', 'utf8');
+
+		await expect(resolveNpmCopilotLoaderFromCommand(shimPath)).resolves.toBe(loaderPath);
+		await fs.rm(tempDir, {recursive: true, force: true});
+	});
+
+	it('should fall back to npm-loader.js when native copilot.exe is absent', async () => {
+		const {resolveNpmCopilotLoaderFromCommand} = await import('../src/copilot');
+		const fs = await import('node:fs/promises');
+		const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'copilot-loader-shim-'));
+		const shimPath = path.join(tempDir, 'copilot.cmd');
+		const loaderPath = path.join(tempDir, 'node_modules', '@github', 'copilot', 'npm-loader.js');
+
+		await fs.mkdir(path.dirname(loaderPath), {recursive: true});
+		await fs.writeFile(shimPath, '@echo off\n', 'utf8');
+		await fs.writeFile(loaderPath, '#!/usr/bin/env node\n', 'utf8');
+
+		await expect(resolveNpmCopilotLoaderFromCommand(shimPath)).resolves.toBe(loaderPath);
+		await fs.rm(tempDir, {recursive: true, force: true});
+	});
+
+	it('should ignore non-shim executables', async () => {
+		const {resolveNpmCopilotLoaderFromCommand} = await import('../src/copilot');
+		await expect(resolveNpmCopilotLoaderFromCommand(path.join(os.tmpdir(), 'copilot.exe'))).resolves.toBeUndefined();
+	});
+});
+
 // ── resolveGhPath tests (integration) ────────────────────────────────
 // These run the actual binary search on the host machine.  They verify
 // the function works on the developer's setup and won't fail on CI where
