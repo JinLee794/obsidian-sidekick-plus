@@ -85,6 +85,90 @@ export async function resolveCommandViaPowerShell(name: string): Promise<string 
 	return undefined;
 }
 
+async function resolveCommandSourcesViaPowerShell(name: string): Promise<string[]> {
+	if (!IS_WINDOWS) return [];
+	const fs = nodeRequire?.('node:fs/promises') as typeof import('node:fs/promises') ?? await import('node:fs/promises');
+	const {execFile} = nodeRequire?.('node:child_process') as typeof import('node:child_process') ?? await import('node:child_process');
+	const {promisify} = nodeRequire?.('node:util') as typeof import('node:util') ?? await import('node:util');
+	const execFileAsync = promisify(execFile);
+	const sources: string[] = [];
+
+	for (const shell of ['powershell.exe', 'pwsh.exe']) {
+		try {
+			const {stdout} = await execFileAsync(shell, [
+				'-NoProfile', '-NoLogo', '-NonInteractive', '-Command',
+				`Get-Command '${name}' -All -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source`,
+			], {
+				timeout: 8000,
+				env: buildSpawnEnv(),
+				windowsHide: true,
+			});
+			for (const line of stdout.trim().split(/\r?\n/)) {
+				const source = line.trim();
+				if (!source || sources.includes(source)) continue;
+				try {
+					await fs.access(source);
+					sources.push(source);
+				} catch { /* stale */ }
+			}
+			if (sources.length > 0) return sources;
+		} catch { /* shell not available or command not found */ }
+	}
+
+	try {
+		const {stdout} = await execFileAsync('where.exe', [name], {
+			timeout: 5000,
+			env: buildSpawnEnv(),
+		});
+		for (const line of stdout.trim().split(/\r?\n/)) {
+			const source = line.trim();
+			if (!source || sources.includes(source)) continue;
+			try {
+				await fs.access(source);
+				sources.push(source);
+			} catch { /* stale */ }
+		}
+	} catch { /* where.exe failed */ }
+
+	return sources;
+}
+
+/**
+ * npm installs Windows commands as .cmd/.ps1 shims. Electron cannot spawn
+ * PowerShell shims reliably, and JavaScript entry points may be launched with
+ * Obsidian's Electron executable instead of node.exe. Resolve a shim such as
+ * `<prefix>/copilot.cmd` to the package's native `copilot.exe` when available,
+ * falling back to the JavaScript loader for non-Electron callers.
+ *
+ * @internal Exported for testing.
+ */
+export async function resolveNpmCopilotLoaderFromCommand(commandPath: string): Promise<string | undefined> {
+	const fs = nodeRequire?.('node:fs/promises') as typeof import('node:fs/promises') ?? await import('node:fs/promises');
+	const path = nodeRequire?.('node:path') as typeof import('node:path') ?? await import('node:path');
+	const ext = path.extname(commandPath).toLowerCase();
+	if (!['.cmd', '.ps1', '.bat', ''].includes(ext)) return undefined;
+
+	const commandDir = path.dirname(commandPath);
+	const packageDirs = [path.join(commandDir, 'node_modules', '@github', 'copilot')];
+	if (path.basename(commandDir).toLowerCase() === '.bin' && path.basename(path.dirname(commandDir)).toLowerCase() === 'node_modules') {
+		packageDirs.push(path.join(path.dirname(commandDir), '@github', 'copilot'));
+	}
+
+	const candidates: string[] = [];
+	for (const packageDir of packageDirs) {
+		candidates.push(path.join(packageDir, 'node_modules', '@github', `copilot-${process.platform}-${process.arch}`, `copilot${EXE_SUFFIX}`));
+		candidates.push(path.join(packageDir, 'npm-loader.js'));
+	}
+
+	for (const loader of candidates) {
+		try {
+			await fs.access(loader);
+			return loader;
+		} catch { /* not found */ }
+	}
+	return undefined;
+}
+
 /**
  * Search for the `gh` CLI binary on disk.
  *
@@ -262,8 +346,10 @@ export async function diagnoseSetup(pluginDir: string, cliPath?: string): Promis
  *
  * Search order:
  *   1. `<pluginDir>/copilot[.exe]`  — flat copy deployed alongside main.js
- *   2. `<pluginDir>/node_modules/@github/copilot-<platform>-<arch>/copilot[.exe]` — dev checkout
- *   3. (Windows) PowerShell `Get-Command copilot` / `where.exe copilot` — system-wide
+ *   2. `<pluginDir>/node_modules/@github/copilot/npm-loader.js` — JS entry point
+ *   3. `<pluginDir>/node_modules/@github/copilot-<platform>-<arch>/copilot[.exe]` — dev checkout
+ *   4. (Windows) npm-installed native Copilot binary resolved from shims
+ *   5. (Windows) PowerShell `Get-Command copilot` / `where.exe copilot` — executable or JS only
  *
  * `pluginDir` must be the absolute path of the plugin folder on disk
  * (obtained from the Obsidian Plugin instance — NOT from __dirname, which
@@ -286,7 +372,14 @@ async function resolveDefaultCliPath(pluginDir: string): Promise<string> {
 			return flatBin;
 		} catch { /* not found */ }
 
-		// 2. node_modules structure (dev checkout)
+		// 2. JS entry point bundled in the @github/copilot package.
+		const bundledLoader = path.join(pluginDir, 'node_modules', '@github', 'copilot', 'npm-loader.js');
+		try {
+			await fs.access(bundledLoader);
+			return bundledLoader;
+		} catch { /* not found */ }
+
+		// 3. node_modules structure (dev checkout)
 		const nativePkg = `@github/copilot-${process.platform}-${process.arch}`;
 		const nativeBin = path.join(pluginDir, 'node_modules', nativePkg, `copilot${ext}`);
 		try {
@@ -295,10 +388,17 @@ async function resolveDefaultCliPath(pluginDir: string): Promise<string> {
 		} catch { /* not found */ }
 	}
 
-	// 3. System-wide search via PowerShell / where.exe (Windows)
+	// 4. System-wide search via PowerShell / where.exe (Windows)
 	if (IS_WINDOWS) {
-		const found = await resolveCommandViaPowerShell('copilot');
-		if (found) return found;
+		const found = await resolveCommandSourcesViaPowerShell('copilot');
+		for (const source of found) {
+			const loader = await resolveNpmCopilotLoaderFromCommand(source);
+			if (loader) return loader;
+		}
+		for (const source of found) {
+			const sourceExt = path.extname(source).toLowerCase();
+			if (sourceExt === '.exe' || sourceExt === '.js') return source;
+		}
 	}
 
 	// Not found — caller will omit cliPath so the SDK uses PATH.
