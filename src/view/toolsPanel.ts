@@ -23,7 +23,6 @@ export function buildOilServerEntry(vaultPath: string): McpServerEntry {
 			command: 'npx',
 			args: ['-y', OIL_PACKAGE, 'mcp'],
 			env: {
-				'npm_config_@jinlee794:registry': 'https://npm.pkg.github.com',
 				'OBSIDIAN_VAULT_PATH': vaultPath,
 			},
 		},

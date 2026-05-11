@@ -1,7 +1,7 @@
 {
 	"id": "sidekick-plus",
 	"name": "Sidekick Plus",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"minAppVersion": "0.15.0",
 	"description": "An enhanced AI sidekick for Obsidian — agents, tools, skills, autocompletion, and smart workflows directly in your notes. Based on Sidekick by Alex Vieira.",
 	"author": "Jin Lee",
